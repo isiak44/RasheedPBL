@@ -1,1 +1,4 @@
-This is my second practice project and it is all about git
+This is my second practice project and it is about Basic git commands. 
+
+Initializing a Git repository and making commits.
+
