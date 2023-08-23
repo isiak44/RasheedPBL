@@ -1,4 +1,1 @@
-This is my second practice project and it is about Basic git commands. 
-
-Initializing a Git repository and making commits.
-
+merging the master branch with main
