@@ -34,6 +34,26 @@ I created a new file in the home directory called Devops_pbl and inside this fol
 
 <img width="1656" alt="giitbranch-d" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/e99dc11f-825f-495d-9b80-ae81a288be10">
 
+---
+
+`git remote add origin`
+
+<img width="1656" alt="git remote" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/e8248569-5ccb-4b25-bebb-1a060a75b349">
+
+> Generated token
+
+<img width="1723" alt="token" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/1b365528-39f0-4726-bc97-c30e93e3c086">
+
+`git remote seturl `
+
+<img width="1656" alt="git remote seturl" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/cbe9ea93-a1c7-4c14-9461-f3de0863e3b6">
+
+`git clone https://github.com/isiak44/Rasheed_Devops.git`
+
+<img width="1266" alt="git clone" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/7c1afc3b-588a-4002-8567-738a67c0047a">
+
+
+
 
 
  
