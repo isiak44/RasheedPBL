@@ -5,9 +5,11 @@ In this page we will explore some basic Linux commands with a preview of how I r
 
 ### 1. Sudo Command:
 
-Sudo
+Sudo which also means superuser allows me to perform task that requires administrative or root permission. 
 
 `sudo apt upgrade`
+
+This command simply upgrades packages that need to be upgraded. 
 
 <img width="965" alt="sudo apt upgrade" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/e3db044b-efc7-425f-ae2f-bc0fd7672886">
 
@@ -17,6 +19,8 @@ Sudo
 
 `pwd`
 
+The pwd tells shows that I am in the /home/ray directory 
+
 <img width="905" alt="pwd" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/d7ace3d6-9f23-41b7-a0d0-6b59c41b3aa8">
 
 ---
@@ -25,22 +29,26 @@ Sudo
 
 `cd | cd.. | cd ~ | cd -`
 
-<img width="905" alt="ls" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/ec3b649b-c321-4121-889e-82780adb1c0e">
+The cd command helps to navigate through folders and files. 
+`cd` naturally takes you to home, `cd ..` take you one step backward through folders, `cd ~username` goes to another user home while `cd -` moves to the previous folder. 
 
+<img width="905" alt="ls" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/ec3b649b-c321-4121-889e-82780adb1c0e">
 
 ---
 
 ### 4. Ls Command:
 
-`ls | ls -a`
+`ls`
+
+ls command shows the current working directory content like files and folders.  `ls -a` shows hidden files, 
 
 <img width="958" alt="ls-a" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/30a82ce2-0120-4119-a5e6-13b51407926f">
 
-`ls -lh`
+`ls -lh` shows file sizes in easily readable format such as MB, GB, TB. 
 
 <img width="958" alt="ls-lh" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/1b5b4dfe-8a5e-41a0-ab15-a4a083a6c7d5">
 
-`ls -R`
+`ls -R` list all the files in the subdirectories.
 
 <img width="958" alt="ls-R" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/9b5ad674-75d8-494c-bb5b-78f5a7cc85a6">
 
@@ -50,29 +58,39 @@ Sudo
 
 `cat /home/ray/Devops`
 
+The cat command which is also known as concatenate is used to read a file, multiple files together and even files between folders, here I am reading a file named Devops as shown below. 
+
 <img width="868" alt="cat" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/c143dc0c-dc10-48b5-be00-f39c6f47033f">
 
 ---
 
 ### 6. cp Command:
 
-`cp Devops /home/ray/Devops_Folder`
+`cp Devops /home/ray/Devops_Folder` 
+
+This command basically means copying Devops file to Devops_Folder
 
 <img width="950" alt="cp" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/4344d09d-f6ee-4ebe-b9c5-6e99c077e0bd">
 ---
 
-`cp Devops Devops_New2`
+`cp Devops Devops_New2` 
+
+Here we make a duplicate of Devops as Devops_New2
 
 <img width="960" alt="cp2" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/6e63ab85-6288-4e48-b8e8-e913dda62e41">
 ---
 
 `cp -R /home/ray/Downloads/Devops_Folder/ /home/ray/Documents/`
 
+With the -R we are able to copy Devops_Folder which is inside the Downloads directory to a new Directory `Documents` 
+
 <img width="960" alt="cp-r" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/0ec8c8ef-a0a1-4720-bab0-a4d2371f158e">
 
 ### 7. mv Command:
 
 `mv Devops /home/ray/Documents`
+
+Here we use the mv command to move Devops file to Documents 
 
 <img width="963" alt="mv" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/9cb356a5-4c38-4db3-9f44-4fa6d7e8f454">
 
@@ -81,6 +99,8 @@ Sudo
 ### 8. mkdir Command:
 
 `mkdir Devops_Folder | mkdir /home/ray/Documents/Devops_Folder/Inside_Folder`
+
+`mkdir` simply helps to create a new folder Devops_Folder or multiple folders at once. 
 
 <img width="1159" alt="mkdir copy" src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/a3f79f82-68f4-4bff-8b7e-77fa5a2fdcf3">
 
@@ -149,7 +169,6 @@ Sudo
 `head -n 5 Devops`
 
 <img width="1493" alt="head-n " src="https://github.com/isiak44/Rasheed_Devops/assets/27869977/1f50b083-73d8-4695-8a61-2338b329b5c2">
-
 
 ---
 ### 18. tail Command:
@@ -228,7 +247,7 @@ Sudo
 
 `uname`
 
-
+<img width="1723" alt="uname" src="https://github.com/isiak44/RasheedPBL/assets/27869977/4bc574a9-43e8-4d4f-a478-dca83796c852">
 
 ---
 ### 28. top Command:
@@ -242,21 +261,21 @@ Sudo
 
 `history`
 
-
+<img width="781" alt="history" src="https://github.com/isiak44/RasheedPBL/assets/27869977/ed1a6986-6a97-412c-9852-4caaa2c1f268">
 
 ---
 ### 30. man Command:
 
 `man`
 
-
+<img width="1066" alt="man ls" src="https://github.com/isiak44/RasheedPBL/assets/27869977/395ed476-505b-4a9a-ab48-292459bb7834">
 
 ---
 ### 31. echo Command:
 
 `echo`
 
-
+<img width="1066" alt="echo" src="https://github.com/isiak44/RasheedPBL/assets/27869977/7d6a105d-7755-4fbb-b365-dab3cd3363fe">
 
 ---
 ### 32. zip, unzip Command:
@@ -274,7 +293,7 @@ Sudo
 
 `hostname`
 
-
+<img width="1066" alt="hostname" src="https://github.com/isiak44/RasheedPBL/assets/27869977/b93e8184-37f9-4b73-a66e-bc15912c4f33">
 
 ---
 ### 34. userdel, useradd Command:
@@ -298,7 +317,7 @@ Sudo
 
 `nano|vim|jed`
 
-
+<img width="781" alt="nano vi" src="https://github.com/isiak44/RasheedPBL/assets/27869977/50165704-c486-40d4-bb77-035d247bf0b2">
 
 
 ---
@@ -315,17 +334,18 @@ Sudo
 
 `su`
 
-
+<img width="1066" alt="su" src="https://github.com/isiak44/RasheedPBL/assets/27869977/51767440-7995-4fa5-869e-2fa042d12394">
 
 ---
 ### 39. htop Command:
 
 `htop`
 
-
+<img width="1723" alt="htop" src="https://github.com/isiak44/RasheedPBL/assets/27869977/1ba22211-5a0e-46dd-89e8-f0a5d8134c94">
 
 ---
 ### 40. ps Command:
 
 `ps`
 
+<img width="1723" alt="ps" src="https://github.com/isiak44/RasheedPBL/assets/27869977/b14020b2-f640-4f85-afa0-ce882087d48c">
