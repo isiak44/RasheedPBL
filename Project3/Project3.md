@@ -152,9 +152,16 @@ then we paste the PHP code to the index.php file in projectlamp host.
 
 ![php-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/70cd61d7-be6d-44a8-8bed-172a417cf151)
 
+`$ sudo rm /var/www/projectlamp/index.php`
+
+![rm-index php](https://github.com/isiak44/RasheedPBL/assets/27869977/db68e823-35d4-4cb2-a6b3-ac15093566d7)
+
+
 ## Creating a virtual host for the website using apache
 
 `sudo mkdir /var/www/projectlamp`
+
+![mkdir-projectlamp](https://github.com/isiak44/RasheedPBL/assets/27869977/5a47348d-d5cc-4e21-95e8-eb79dd84e771)
 
 
 `sudo chown -R $USER:$USER /var/www/projectlamp`
@@ -181,24 +188,36 @@ then we copy this code above to `projectlamp.conf`
 ![sudo-vim-projectlamp-conf](https://github.com/isiak44/RasheedPBL/assets/27869977/70b9ecc3-2162-401f-bfb5-8a526ee3e0d4)
 
 
-`sudo ls /etc/apache2/sites-available`
+`sudo ls /etc/apache2/sites-available`.
+
+list of sites available in apache, the 000-default.conf  is the apache configuration while the profjectlamp.conf prompt apache to serve `projectlamp` using `/var/www/projectlamp as its web root directory 
 
 ![ls-sites-available](https://github.com/isiak44/RasheedPBL/assets/27869977/abd5c78e-3cda-46f5-9018-c44da10c836d)
 
 `sudo a2ensite projectlamp`
 
+a2ensite command enables the new virtual host "projemplamp.conf"
+
 ![sudo-ensite](https://github.com/isiak44/RasheedPBL/assets/27869977/fceec22d-942f-4f51-ae01-2751b9ad292f)
 
 `sudo a2dissite 000-default`
+
+In order for Apache default conf page not to overwrite our new virtual host, we use `a2dissite` to disable apache default page. 
 
 ![sudo-a2dissite](https://github.com/isiak44/RasheedPBL/assets/27869977/af0ed5b1-db85-4625-bf94-661da2f1c785)
 
 `sudo apache2ctl configtest`
 
+To make sure the configuration file doesn't contain syntax errors, we use this command to test our conf
+
 `sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html`
+
+This command created a new file `index.html` in `/var/www/projectlamp/` also to input some codes in the index.html file. 
 
 ![sudo-echo](https://github.com/isiak44/RasheedPBL/assets/27869977/c55ee24c-ce69-4a01-982c-46b09ab4f2b9)
 
 `http://<Public-IP-Address>:80`
+
+Now we check our website with the system browser using the public ip address and it shows what we have in `/var/www/projectlamp/index.html` which is our server public hostname and public ip address
 
 ![echo-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/7fcec88c-ac93-4c10-be3c-7203ab2cbe5d)
