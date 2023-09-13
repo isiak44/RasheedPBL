@@ -276,4 +276,13 @@ After saving the php script, we then test the script by inputting the below code
 
 And here we have our test table on MySQL displayed on browser. 
 
+---
+
+### Challenges encountered in this project
+
+Had a challenge with hosting PHP page on Nginx, I keep getting error whenever i launched my index.php on my webserver. 
+
+In order to fix this error, I had to modify the version of php on my ProjectLEMP config file in `/etc/nginx/sites-available/projectLEMP` from `php8.1` to the current php version which is `php7.4`
+
+![error-fixed](https://github.com/isiak44/RasheedPBL/assets/27869977/a62a6266-8ffb-47d8-8c52-9d12b971cb0a)
 
