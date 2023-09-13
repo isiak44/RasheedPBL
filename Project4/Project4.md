@@ -1,9 +1,8 @@
 # Project 4 -- WEB Stack Implemntation (LEMP Stack)
+---
 
 In this project, we will deploy a LEMP stack web application on AWS Cloud server.
 However, LEMP simply means Linux, Enginx, Mysql, and PHP/Python or Perl. 
-
----
 
 ## Launch EC2 Instance on Terminal with SSH
 
@@ -15,7 +14,7 @@ In Order to connect to this ec2. we use the ssh and private key pair which is in
 
 First we update our firewall with `sudo apt update`
 
-![sudo-apt-update](https://github.com/isiak44/RasheedPBL/assets/27869977/2d9f3502-4b5a-4fc7-a48f-f9641d7592a7
+![sudo-apt-update](https://github.com/isiak44/RasheedPBL/assets/27869977/8575f04c-305b-49bb-908f-99eb5bdf73ed)
 
 `sudo apt upgrade`
 
@@ -71,17 +70,21 @@ This command connect to MySQL server as the administrative database user root
 
 `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassWord.1';`
 
+![mysql-alsteruser-pass](https://github.com/isiak44/RasheedPBL/assets/27869977/562c079b-8e79-4ce8-949e-b9492f975572)
+
 and with this command we set a default password for the root user using mysql native password `PassWord.1`
 
 `exit`
 
 then we exit back to our linux terminal. 
 
-![sudo-mysql](https://github.com/isiak44/RasheedPBL/assets/27869977/c2da23a6-e9db-4075-9e24-ca4ea89bb4d2)
+![exit](https://github.com/isiak44/RasheedPBL/assets/27869977/50c297fa-f37f-4d42-85f2-4256e891cd26)
 
 `sudo mysql_secure_installation`
 
-![mysql-secure-inst](https://github.com/isiak44/RasheedPBL/assets/27869977/d46a0d04-e371-4dc2-ac5c-35b04b8d07dd)
+![mysql-secure-ins](https://github.com/isiak44/RasheedPBL/assets/27869977/2e658a32-a46f-416f-9219-b59075349d73)
+
+![mysql-ins-foot](https://github.com/isiak44/RasheedPBL/assets/27869977/2c867c0b-55fb-4cd8-89ed-b789f871b537)
 
 `sudo mysql -p`
 
@@ -112,7 +115,7 @@ Here we created a new directory called `projectLEMP` in `/var/www/`
 
 then we assign owner of projectLEMP to current system user.
 
-![sudo-chown-R](https://github.com/isiak44/RasheedPBL/assets/27869977/9782d51e-faf9-4d25-a4da-c4bee66868e0)
+![chown-projectLEMP](https://github.com/isiak44/RasheedPBL/assets/27869977/03fd8a56-34ca-4496-8fc4-a33537175b5d)
 
 After that we then create a new config file `projectLEMP` in sites-available directory with 
 
