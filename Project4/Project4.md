@@ -1,72 +1,61 @@
-# Project 3 -- Lamp Stack Implemntation
+# Project 4 -- WEB Stack Implemntation (LEMP Stack)
 
-In this project, we will deploy a LAMP stack web application on AWS Cloud server.
-However, LAMP means Linux, Apache, Mysql, and PHP/Python or Perl. 
+In this project, we will deploy a LEMP stack web application on AWS Cloud server.
+However, LEMP simply means Linux, Enginx, Mysql, and PHP/Python or Perl. 
 
 ---
 
-## EC2 Instance on AWS
-
-First we created an ubutu linux operating system on our AWS server which is also called ec2 as shown below
-
-![ec2_ubuntu](https://github.com/isiak44/RasheedPBL/assets/27869977/267466ae-0bac-4ac9-a33f-797793b552d1)
+## Launch EC2 Instance on Terminal with SSH
 
 In Order to connect to this ec2. we use the ssh and private key pair which is in my download folder. 
 
-`ssh -i isiak_ec2.pem ubuntu@ec2-13-53-106-58.eu-north-1.commute.amazonaws.com`
+`ssh -i isiak_ec2.pem ubuntu@ec2-172-31-44-245.eu-north-1.commute.amazonaws.com`
 
-Running this ssh code on our terminal helps us connect to the ubuntu linux operating system we created on our aws server. 
-
-![ssh-i-isiak_ec2 pem](https://github.com/isiak44/RasheedPBL/assets/27869977/e8b80da4-5236-4fef-82d3-b4dcc5e7455f)
-
-`sudo chmod 0400 <private-key-name>.pem`
-
-Then we change permission for the private key downloaded 
-
-![chmod400-Isiak_ec2 pem](https://github.com/isiak44/RasheedPBL/assets/27869977/6584e65e-8575-4699-bf54-49bc543edb7d)
-
-## Installing Apache and Updating Firewall
+![ssh-ec2](https://github.com/isiak44/RasheedPBL/assets/27869977/0a590d2c-57dc-4ed1-ad64-dab61b98d6c7)
 
 First we update our firewall with `sudo apt update`
-`sudo apt update`
 
-![sudo-apt-update](https://github.com/isiak44/RasheedPBL/assets/27869977/9d1b37a0-4de6-483c-9597-2f986a412b02)
+![sudo-apt-update](https://github.com/isiak44/RasheedPBL/assets/27869977/2d9f3502-4b5a-4fc7-a48f-f9641d7592a7
 
 `sudo apt upgrade`
 
 After the update, the terminal wants me to upgrade some packages. 
 
-![sudo-apt-upgrade](https://github.com/isiak44/RasheedPBL/assets/27869977/18984528-e980-4983-8445-ee9f855bbe4f)
+![sudo-apt-upgrade](https://github.com/isiak44/RasheedPBL/assets/27869977/eb06aa53-1fdd-482c-a865-0f9cbb3c695a)
 
-`sudo apt install apache2`
+---
 
-In order to Deployour website, we install apache with the ubuntu package manager `apt`
+## Installing Nginx Web Server
 
-![sudo-install-apache2](https://github.com/isiak44/RasheedPBL/assets/27869977/073b0a87-c835-436d-b510-00e2a58d394a)
+`sudo apt install nginx`
 
-`sudo systemctl status apache2`
+![install-nginx](https://github.com/isiak44/RasheedPBL/assets/27869977/28c85586-78a3-40d8-b83a-8caa480bdc0c)
 
-After successful installation we use this command to check the status of apache and here it shows running which means apache2 is active and ready to launch our first web server.
+`sudo systemctl status nginx`
 
-![systemctl-status-apache2](https://github.com/isiak44/RasheedPBL/assets/27869977/84c175a8-eb3c-4851-8941-0e409903db16)
+After successful installation we use this command to check the status of apache and here it shows running, which means nginx is active and ready to launch our web server.
+
+![systemctl-status](https://github.com/isiak44/RasheedPBL/assets/27869977/c6e0fd1e-8a02-4394-9488-d514217a2cf7)
 
 ### Configuring Security Group Inbound Rules on Ec2 Instance
 
-In order to access our apache website locally from the internet with any public ip address, we create an inbound rule on aws ec2 security group settings and set http rule, port 80 and source 0.0.0.0/0 means from any IP address. 
+In order to access our nginx website locally or from the internet with any public ip address, we create an inbound rule on aws ec2 security group settings and set http rule, port 80 and source 0.0.0.0/0 means from any IP address. 
 
-![Inboundrules](https://github.com/isiak44/RasheedPBL/assets/27869977/f52ac7fa-672f-4e9d-9a58-bc621390020a)
+![http-inboundrules](https://github.com/isiak44/RasheedPBL/assets/27869977/b2b7a857-c053-47b4-b32d-52d8193ddac4)
 
 `curl http://localhost:80`
 
-And to access this apache page locally in our ubuntu shell we use curl `http://localhost:80`
+And to access our nginx page locally in our ubuntu shell we use curl `http://localhost:80`
 
-![curl-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/a8ac54f9-ff40-48c2-bb89-5c43ee490dc1)
+![curl-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/732564c0-58f1-40d3-b5ed-afa46e558fa8)
 
 `http://<Public-IP-Address>:80`
 
-Here we test how Apache http server can respond to requests from the internet by openening a web browser and running the ec2 public address. 
+Here we test how nginx http server can respond to requests from the internet by openening a web browser and running the ec2 public address. 
 
-![apace2-default-page](https://github.com/isiak44/RasheedPBL/assets/27869977/ba94d68d-c79b-4408-855f-4569a620f1e6)
+![web-nginx](https://github.com/isiak44/RasheedPBL/assets/27869977/9fd551c2-aa65-4e11-8aaa-a9eed7ce4dbc)
+
+---
 
 ## Installing MySQL
 
@@ -92,132 +81,196 @@ then we exit back to our linux terminal.
 
 `sudo mysql_secure_installation`
 
-![sudo-mysql-secure-installation](https://github.com/isiak44/RasheedPBL/assets/27869977/848ea0a4-7731-46fb-ae20-6f94d944eeff)
-
-Mysql installation footer
-![my-sql-installation-footer](https://github.com/isiak44/RasheedPBL/assets/27869977/8f2d47aa-f532-4c5a-837a-9a4c41dba412)
+![mysql-secure-inst](https://github.com/isiak44/RasheedPBL/assets/27869977/d46a0d04-e371-4dc2-ac5c-35b04b8d07dd)
 
 `sudo mysql -p`
 
-![sudo-mysql -p](https://github.com/isiak44/RasheedPBL/assets/27869977/d7b87713-70a3-41ab-bf12-c7b9ee1e1ae8)
+![mysql-p](https://github.com/isiak44/RasheedPBL/assets/27869977/3e565bda-8fdd-469c-b557-54318a42453a)
 
-## Installing php and its modules
+---
 
-PHP is a component part of our set LAMP stack setup that processes code to display dynamic content to the end user. In addition to the php package, we install `php-mysql` a PHP module that allows PHP to communicate with MySQL database. 
-Then we added `libapache2-mod-php` to enable Apache to handle PHP files. To install these 3 packages at once we run
+## Installing php 
 
-`sudo apt install php libapache2-mod-php php-mysql`
+PHP is a component part of our set LEMP stack setup that processes code to display dynamic content to the end user. In addition to the php package, we install `php-mysql` a PHP module that allows PHP to communicate with MySQL database. 
+Then we added `php-fpm` which stands for PHP fastCGI process manager. tells Nginx to pass PHP requests to this software for processing.
 
-![sudo-apt install-php](https://github.com/isiak44/RasheedPBL/assets/27869977/cca7b7c7-8d69-40c2-a579-96570d9c26ed)
+`sudo apt install php-fpm php-mysql`
 
-`php -v`
+![install-php](https://github.com/isiak44/RasheedPBL/assets/27869977/1f08d8c7-1283-4130-86fd-5afaaa6b84ef)
 
-This command prints our php version. 
+### Configuring Nginx to Use PHP Processor
 
-## Enbling PHP on the website
+Nginx has one server blobk enabled by default and is configured to serve documents out of a directory at `/var/www/html`. While it works well for a single site, it may be hard to manage when hosting multiple sites. So in order not to modifile this `/var/www/html`, we'll create a directory structure within `/var/www` for our domain web. 
 
-`sudo vim /etc/apache2/mods-enabled/dir.conf`
+`sudo mkdir /var/www/projectLEMP`
 
+Here we created a new directory called `projectLEMP` in `/var/www/`
 
+![mkdir-projectLEMP](https://github.com/isiak44/RasheedPBL/assets/27869977/80fd9bee-7b7f-4b92-a74b-32316d7d9c36)
 
-![sudo-vim-dir-config](https://github.com/isiak44/RasheedPBL/assets/27869977/fc40710c-0fee-4587-8e4b-66579a59cc4d)
+`sudo chown -R $USER:$USER /var/www/projectLEMP`
 
-`<IfModule mod_dir.c>
-        From this:
-        DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
-        To this:
-        DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
-</IfModule>`
-
-![sudo-vim-dir conf](https://github.com/isiak44/RasheedPBL/assets/27869977/3f42bf86-60b1-454a-a210-e98b6089ab48)
-
-`sudo systemctl reload apache2`
-
-After making this changes we reload apache2
-
-![sudo-systemctlreload](https://github.com/isiak44/RasheedPBL/assets/27869977/6fdc71c5-868b-419a-ad01-9b068189bd42)
-
-`vim /var/www/projectlamp/index.php`
-
-Here we created a PHP script to test that PHP is correctly installed and configured on the server.
-
-![Sudo-vim-index php](https://github.com/isiak44/RasheedPBL/assets/27869977/56c11623-8c2d-4fd2-aaa3-8c8c6de98249)
-
-`<?php
-phpinfo();`
-
-then we paste the PHP code to the index.php file in projectlamp host. 
-
-`http://<Public-IP-Address>:80`
-
-![php-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/70cd61d7-be6d-44a8-8bed-172a417cf151)
-
-`$ sudo rm /var/www/projectlamp/index.php`
-
-![rm-index php](https://github.com/isiak44/RasheedPBL/assets/27869977/db68e823-35d4-4cb2-a6b3-ac15093566d7)
-
-
-## Creating a virtual host for the website using apache
-
-`sudo mkdir /var/www/projectlamp`
-
-![mkdir-projectlamp](https://github.com/isiak44/RasheedPBL/assets/27869977/5a47348d-d5cc-4e21-95e8-eb79dd84e771)
-
-
-`sudo chown -R $USER:$USER /var/www/projectlamp`
-
-then we assign owner of projectlamp to current system user.
+then we assign owner of projectLEMP to current system user.
 
 ![sudo-chown-R](https://github.com/isiak44/RasheedPBL/assets/27869977/9782d51e-faf9-4d25-a4da-c4bee66868e0)
 
-`sudo vi /etc/apache2/sites-available/projectlamp.conf`
+After that we then create a new config file `projectLEMP` in sites-available directory with 
 
-After that we then create an empty file called `projectlamp.conf`
+`sudo nano /etc/nginx/sites-available/projectLEMP`
 
-`<VirtualHost *:80>
-    ServerName projectlamp
-    ServerAlias www.projectlamp 
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/projectlamp
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>` 
+this command open a new file, then we paste the code below inside it ;
 
-then we copy this code above to `projectlamp.conf`
+`server {
 
-![sudo-vim-projectlamp-conf](https://github.com/isiak44/RasheedPBL/assets/27869977/70b9ecc3-2162-401f-bfb5-8a526ee3e0d4)
+    listen 80;
+    server_name projectLEMP www.projectLEMP;
+    root /var/www/projectLEMP;
 
+    index index.html index.htm index.php;
 
-`sudo ls /etc/apache2/sites-available`.
+    location / {
+        try_files $uri $uri/ =404;
+    }
 
-list of sites available in apache, the 000-default.conf  is the apache configuration while the profjectlamp.conf prompt apache to serve `projectlamp` using `/var/www/projectlamp as its web root directory 
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
 
-![ls-sites-available](https://github.com/isiak44/RasheedPBL/assets/27869977/abd5c78e-3cda-46f5-9018-c44da10c836d)
+    location ~ /\.ht {
+        deny all;
+    }
 
-`sudo a2ensite projectlamp`
+}`
 
-a2ensite command enables the new virtual host "projemplamp.conf"
+![projectLEMP-config](https://github.com/isiak44/RasheedPBL/assets/27869977/6adeb0d6-a90b-4782-9173-2ff5f83ddd55)
 
-![sudo-ensite](https://github.com/isiak44/RasheedPBL/assets/27869977/fceec22d-942f-4f51-ae01-2751b9ad292f)
+After creating the projectLEMP config fille in sites-available, we then link it to sites-enabled directory.
 
-`sudo a2dissite 000-default`
+`sudo ln -s /etc/nginx/sites-available/projectLEMP /etc/nginx/sites-enabled/`
 
-In order for Apache default conf page not to overwrite our new virtual host, we use `a2dissite` to disable apache default page. 
+![link-projectLEMP](https://github.com/isiak44/RasheedPBL/assets/27869977/140bb387-0753-4238-ad24-7129b5c799fa)
 
-![sudo-a2dissite](https://github.com/isiak44/RasheedPBL/assets/27869977/af0ed5b1-db85-4625-bf94-661da2f1c785)
+`sudo nginx -t`
 
-`sudo apache2ctl configtest`
+This command test our nginx configuration for syntax errors.
 
-To make sure the configuration file doesn't contain syntax errors, we use this command to test our conf
+![nginx-t](https://github.com/isiak44/RasheedPBL/assets/27869977/1c44c867-71e6-4ea2-84cc-9514d603ea9e)
+
+`sudo unlink /etc/nginx/sites-enabled/default`
+
+With this command we unlink or disabled Nginx default host that is currently configured to listen on port 80. 
+
+`sudo systemctl reload nginx`
+
+Then we reload Nginx.
 
 `sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html`
 
 This command created a new file `index.html` in `/var/www/projectlamp/` also to input some codes in the index.html file. 
 
-![sudo-echo](https://github.com/isiak44/RasheedPBL/assets/27869977/c55ee24c-ce69-4a01-982c-46b09ab4f2b9)
+![echo-index html](https://github.com/isiak44/RasheedPBL/assets/27869977/9ed501e9-baf5-4cc8-bb78-177dcc363985)
 
 `http://<Public-IP-Address>:80`
 
 Now we check our website with the system browser using the public ip address and it shows what we have in `/var/www/projectlamp/index.html` which is our server public hostname and public ip address
 
-![echo-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/7fcec88c-ac93-4c10-be3c-7203ab2cbe5d)
+![web-nginx-index html](https://github.com/isiak44/RasheedPBL/assets/27869977/205493bd-e158-407c-aec8-f8d8d275aebc)
+
+---
+
+### Testing PHP with Nginx
+
+In order to test PHP with Nginx we created a new file index.php in our webhost projectLEMP and then pasted this PHP code 
+
+`<?php
+phpinfo();`. 
+
+`nano /var/www/projectLEMP/index.php`
+
+![nano-index php](https://github.com/isiak44/RasheedPBL/assets/27869977/155dd4a1-6d81-44a2-8f19-ff78413cbbf5)
+
+`http://`public_IP`/index.php`
+
+![web-php](https://github.com/isiak44/RasheedPBL/assets/27869977/833fe500-7e39-4662-a428-1e7f72844f69)
+
+`sudo rm /var/www/your_domain/index.php`
+
+---
+
+## Retrieving Data from MySQL Database with PHP
+
+In order for Nginx web page to query data from MySQL, we need to create a test database with simple to do list and configure access to it. 
+
+First we connect to MySQL server 
+
+`sudo mysql -p`
+
+![sudo-mysql](https://github.com/isiak44/RasheedPBL/assets/27869977/250ba894-c684-4bf7-b329-fca70c364e76)
+
+`CREATE DATABASE "Isiak_database"; `
+
+Createdn database in MySQL named `Isiak_database`
+
+![create-database](https://github.com/isiak44/RasheedPBL/assets/27869977/658b24c1-199c-46c4-9c5f-200845247be5)
+
+`CREATE USER 'isiak44'@'%' IDENTIFIED WITH mysql_native_password BY 'PassWord.1';`
+
+Created a user named `isiak44` with default MySQL password `PassWord.1`
+
+![create-user](https://github.com/isiak44/RasheedPBL/assets/27869977/871e078f-9015-44ca-a9c5-81e5325c7e6f)
+
+`GRANT ALL ON example_database.* TO 'example_user'@'%';`
+
+This command grant user `isiak44` full privileges over `Isiak_database`
+
+![grant-database](https://github.com/isiak44/RasheedPBL/assets/27869977/bda64f66-4d93-464f-b269-a2be6f1286b8)
+
+`mysql> exit`
+
+Exit from MySQL to my Ubuntu Terminal. 
+
+![exit](https://github.com/isiak44/RasheedPBL/assets/27869977/42fdbd97-f768-4cde-b2c1-280a459e4645)
+
+`sudo mysql -u isiak44 -p`
+
+This command logged into the new user isiak44 in MySQL, `-p` promt the user to input password. 
+
+![mysql-u-isiak44](https://github.com/isiak44/RasheedPBL/assets/27869977/cd9df54b-c3aa-4763-a861-5dd6e4c9391b)
+
+`mysql> SHOW DATABASES;`
+
+![show-database](https://github.com/isiak44/RasheedPBL/assets/27869977/1912daeb-be44-431e-b88f-39f909659eb2)
+
+`CREATE TABLE Isiak_database.todo_list (item_id INT AUTO_INCREMENT,content VARCHAR(255),PRIMARY KEY(item_id));`
+
+Here we created a test table in MySQL named `todo_list`
+
+![create-table](https://github.com/isiak44/RasheedPBL/assets/27869977/0611a9e8-8d9f-45d9-a225-8a5c4df0c0bc)
+
+`INSERT INTO Isiak_database.todo_list (content) VALUES ("My first Project is Linux");`
+
+Here we inserted a few rows in todo_list table as shown below.
+
+![inser-into-todolist](https://github.com/isiak44/RasheedPBL/assets/27869977/5a54d89c-a6a3-4664-9d03-fe5d1f62fdb8)
+
+`SELECT * FROM Isiak_database.todo_list;`
+
+This command confirms that the inputed data is saved. 
+
+![insert-into-todolist2](https://github.com/isiak44/RasheedPBL/assets/27869977/09090260-8dc1-460b-9afb-2cd1b4c66118)
+
+`sudo nano /var/www/projectLEMP/todo_list.php`
+
+Here we created a `todo_list.php` file that contains php script in our projectLEMP web root which connects to MySQL database and query for content in our todo_list table. 
+
+![nano-todo-list](https://github.com/isiak44/RasheedPBL/assets/27869977/6947884f-a80c-4345-97a1-3267589534c2)
+
+After saving the php script, we then test the script by inputting the below code on our web browser. 
+`http://<Public_IP/todo_list.php`
+
+![web-todo-list](https://github.com/isiak44/RasheedPBL/assets/27869977/e91a6b23-4b97-42e7-a8ae-314ff19f166f)
+
+And here we have our test table on MySQL displayed on browser. 
+
+
