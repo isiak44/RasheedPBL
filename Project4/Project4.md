@@ -1,18 +1,18 @@
-# Project 4 -- WEB Stack Implemntation (LEMP Stack)
+# Project 4 -- WEB Stack Implementation (LEMP Stack)
 ---
 
-In this project, we will deploy a LEMP stack web application on AWS Cloud server.
-However, LEMP simply means Linux, Enginx, Mysql, and PHP/Python or Perl. 
+In this project, we will deploy a LEMP stack web application on an AWS Cloud server.
+However, LEMP means Linux, Enginx, Mysql, PHP/Python, or Perl. 
 
 ## Launch EC2 Instance on Terminal with SSH
 
-In Order to connect to this ec2. we use the ssh and private key pair which is in my download folder. 
+In Order to connect to this EC2. we use the SSH and private key pair in my download folder. 
 
 `ssh -i isiak_ec2.pem ubuntu@ec2-172-31-44-245.eu-north-1.commute.amazonaws.com`
 
 ![ssh-ec2](https://github.com/isiak44/RasheedPBL/assets/27869977/0a590d2c-57dc-4ed1-ad64-dab61b98d6c7)
 
-First we update our firewall with `sudo apt update`
+First, we update our firewall with `sudo apt update`
 
 ![sudo-apt-update](https://github.com/isiak44/RasheedPBL/assets/27869977/8575f04c-305b-49bb-908f-99eb5bdf73ed)
 
@@ -32,25 +32,25 @@ After the update, the terminal wants me to upgrade some packages.
 
 `sudo systemctl status nginx`
 
-After successful installation we use this command to check the status of apache and here it shows running, which means nginx is active and ready to launch our web server.
+After successful installation, we use this command to check the status of Apache and here it shows running, which means nginx is active and ready to launch our web server.
 
 ![systemctl-status](https://github.com/isiak44/RasheedPBL/assets/27869977/c6e0fd1e-8a02-4394-9488-d514217a2cf7)
 
 ### Configuring Security Group Inbound Rules on Ec2 Instance
 
-In order to access our nginx website locally or from the internet with any public ip address, we create an inbound rule on aws ec2 security group settings and set http rule, port 80 and source 0.0.0.0/0 means from any IP address. 
+In order to access our nginx website locally or from the internet with any public IP address, we create an inbound rule on aws ec2 security group settings and set HTTP rule, port 80 and source 0.0.0.0/0 means from any IP address. 
 
 ![http-inboundrules](https://github.com/isiak44/RasheedPBL/assets/27869977/b2b7a857-c053-47b4-b32d-52d8193ddac4)
 
 `curl http://localhost:80`
 
-And to access our nginx page locally in our ubuntu shell we use curl `http://localhost:80`
+To access our nginx page locally in our Ubuntu shell we use curl `http://localhost:80`
 
 ![curl-localhost](https://github.com/isiak44/RasheedPBL/assets/27869977/732564c0-58f1-40d3-b5ed-afa46e558fa8)
 
 `http://<Public-IP-Address>:80`
 
-Here we test how nginx http server can respond to requests from the internet by openening a web browser and running the ec2 public address. 
+Here we test how the nginx http server can respond to requests from the internet by opening a web browser and running the ec2 public address. 
 
 ![web-nginx](https://github.com/isiak44/RasheedPBL/assets/27869977/9fd551c2-aa65-4e11-8aaa-a9eed7ce4dbc)
 
@@ -58,7 +58,7 @@ Here we test how nginx http server can respond to requests from the internet by 
 
 ## Installing MySQL
 
-MySQL is a Database Management system (DBMS) that stores and manage data for our website in a relational database. 
+MySQL is a Database Management system (DBMS) that stores and manages data for our website in a relational database. 
 
 `sudo apt install mysql-server`
 
@@ -66,17 +66,17 @@ MySQL is a Database Management system (DBMS) that stores and manage data for our
 
 `sudo mysql`
 
-This command connect to MySQL server as the administrative database user root
+This command connects to MySQL server as the administrative database user root
 
 `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassWord.1';`
 
 ![mysql-alsteruser-pass](https://github.com/isiak44/RasheedPBL/assets/27869977/562c079b-8e79-4ce8-949e-b9492f975572)
 
-and with this command we set a default password for the root user using mysql native password `PassWord.1`
+and with this command, we set a default password for the root user using mysql native password `PassWord.1`
 
 `exit`
 
-then we exit back to our linux terminal. 
+then we exit back to our Linux terminal. 
 
 ![exit](https://github.com/isiak44/RasheedPBL/assets/27869977/50c297fa-f37f-4d42-85f2-4256e891cd26)
 
@@ -113,15 +113,15 @@ Here we created a new directory called `projectLEMP` in `/var/www/`
 
 `sudo chown -R $USER:$USER /var/www/projectLEMP`
 
-then we assign owner of projectLEMP to current system user.
+Then we assign owner of projectLEMP to current system user.
 
 ![chown-projectLEMP](https://github.com/isiak44/RasheedPBL/assets/27869977/03fd8a56-34ca-4496-8fc4-a33537175b5d)
 
-After that we then create a new config file `projectLEMP` in sites-available directory with 
+After that, we then create a new config file `projectLEMP` in sites-available directory with 
 
 `sudo nano /etc/nginx/sites-available/projectLEMP`
 
-this command open a new file, then we paste the code below inside it ;
+this command opens a new file, and then we paste the code below inside it ;
 
 `server {
 
@@ -148,7 +148,7 @@ this command open a new file, then we paste the code below inside it ;
 
 ![projectLEMP-config](https://github.com/isiak44/RasheedPBL/assets/27869977/6adeb0d6-a90b-4782-9173-2ff5f83ddd55)
 
-After creating the projectLEMP config fille in sites-available, we then link it to sites-enabled directory.
+After creating the projectLEMP config file in sites-available, we then link it to sites-enabled directory.
 
 `sudo ln -s /etc/nginx/sites-available/projectLEMP /etc/nginx/sites-enabled/`
 
@@ -156,13 +156,13 @@ After creating the projectLEMP config fille in sites-available, we then link it 
 
 `sudo nginx -t`
 
-This command test our nginx configuration for syntax errors.
+This command tests our nginx configuration for syntax errors.
 
 ![nginx-t](https://github.com/isiak44/RasheedPBL/assets/27869977/1c44c867-71e6-4ea2-84cc-9514d603ea9e)
 
 `sudo unlink /etc/nginx/sites-enabled/default`
 
-With this command we unlink or disabled Nginx default host that is currently configured to listen on port 80. 
+With this command, we unlink or disable the Nginx default host that is currently configured to listen on port 80. 
 
 `sudo systemctl reload nginx`
 
@@ -184,7 +184,7 @@ Now we check our website with the system browser using the public ip address and
 
 ### Testing PHP with Nginx
 
-In order to test PHP with Nginx we created a new file index.php in our webhost projectLEMP and then pasted this PHP code 
+In order to test PHP with Nginx we created a new file index.php in our web host projectLEMP and then pasted this PHP code 
 
 `<?php
 phpinfo();`. 
