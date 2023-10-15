@@ -1,18 +1,18 @@
 # Implementing Loadbalancer with Nginx
 
-Nginx is a versatile software that perform multiple functions. It can act like a webserver, reverse proxy, and a load balancer. However, a loadbalancer is simply a component in Nginx that allows us to distribute incoming traffic efficiently across multiple servers or resources to ensure optimal utilization and prevent overload on any single servers. 
+Nginx is a versatile software that performs multiple functions. It can act like a web server, reverse proxy, and a load balancer. However, a load balancer is a component in Nginx that allows us to distribute incoming traffic efficiently across multiple servers or resources to ensure optimal utilization and prevent overload on any single server. 
 
 ## Setting up a Basic Load Balancer
 
-To set up load balancer, we will spin up two EC2 instance running ubuntu 22.04 and install Apache webserver in them. we will then open port 8000 to allow traffic from anywhere, and finally update the default page of ther webservers to display their public IP address. 
+To set up the load balancer, we will spin up two EC2 instances running Ubuntu 22.04 and install Apache webserver. we will then open port 8000 to allow traffic from anywhere, and finally update the default page of their webservers to display their public IP address. 
 
-Next we will spin up another EC2 instance runniung same version, and this time install Nginx and configure it to act as a load balancer to help us distribute incomming traffic across the Apache webservers. 
+Next, we will spin up another EC2 instance running the same version, and this time install Nginx and configure it to act as a load balancer to help us distribute incoming traffic across the Apache webservers. 
 
 ### Step 1: Create two instance 
 
 ![Apache-ec2](images/Apache-ec2.png)
 
-> Create new inbound rule to accept traffic from anywhere using port 8000
+> Create a new inbound rule to accept traffic from anywhere using port 8000
 
 ![inbound-rules](images/inbound-rules.png)
 
@@ -31,14 +31,14 @@ and then ssh into our instance
 ![ssh-apache2](<images/ssh apache2.png>)
 
 
-### Step 3: Update server and Install Apache Web-Server on both instance. 
+### Step 3: Update server and Install Apache Web-Server on both instances. 
 
 `sudo apt update -y &&  sudo apt install apache2 -y
 `
 
 ![apt-get-apache2](images/apt-get-apache2.png)
 
-Then we verify that apache is running on both servers. 
+Then we verify that Apache is running on both servers. 
 
 `sudo systemctl status apache2
 `
@@ -49,19 +49,19 @@ Then we verify that apache is running on both servers.
 
 ### Step 4: Configuring Apache to serve a page showing its public IP
 
-By default, Apache serve content on port 80, but in this case we configured apache to serve content on port 8000. 
+By default, Apache serves content on port 80, but in this case, we configured Apache to serve content on port 8000. 
 
 `sudo vi /etc/apache2/ports.conf 
 `
 The `vi` text editor opens the file `/etc/apache2/ports.conf`
 
-Then we add a new listen directive for port 8000 and save file. 
+Then we add a new listen directive for port 8000 and save the file. 
 
 ![apache-conf-vi](images/apache-conf.png)
 
 ![apache-conf-cat](images/apache-conf2.png)
 
-Next we open the file `/etc/apache2/sites-available/000-default.conf` and change port 80 on the virtualhost to 8000 as shown below;
+Next, we open the file `/etc/apache2/sites-available/000-default.conf` and change port 80 on the "virtualhost" to 8000 as shown below;
 
 `sudo vi /etc/apache2/sites-available/000-default.conf
 `
@@ -69,19 +69,19 @@ Next we open the file `/etc/apache2/sites-available/000-default.conf` and change
 ![apache-default-conf](images/apache-default-conf.png)
 
 
-Then we restart apache to load the new configiration using the command below 
+Then we restart Apache to load the new configuration using the command below 
 
 `sudo systemctl restart apache2
 `
 
 ![restart-apache-2](images/rerstart-apache-2.png)
 
-Now we will create a new index.html file which will contain codes to display our instance public IP, we will then override apache webserver's default html file.
+Now we will create a new index.html file which will contain codes to display our instance public IP, we will then override Apache webserver's default HTML file.
 
 `sudo vi index.html
 `
 
-This command open up a new index file, then we paste the below block code iside the index.html.
+This command opens up a new index file, then we paste the below block code inside the index.html.
 
 ```       
  <!DOCTYPE html>
@@ -106,7 +106,7 @@ We change ownership of the index.html file
 
 ![chown-index-html](images/chown-index-html.png)
 
-Override the Apache default html page with our new index.html with the command below; 
+Override the Apache default HTML page with our new index.html with the command below; 
 
 `sudo cp -f ./index.html /var/www/html/index.html
 `
@@ -135,7 +135,7 @@ Now we can test on our web browser to see the new index.html page
 
 ![Nginx-ec2](images/Nginx-ec2.png)
 
-Create new inbound rule for port 80 to accept traffic from anywhere
+Create a new inbound rule for port 80 to accept traffic from anywhere
 
 ![nginx-inboundrules](images/Nginx-inboundrules.png)
 
@@ -154,14 +154,14 @@ Then we connect to our instance using SSH
 
 ![aptget-nginx](images/aptget-nginx.png)
 
-Next we Verify that Nginx is installed
+Next, we Verify that Nginx is installed
 
 `sudo systemctl status nginx
 `
 
 ![nginx-status](images/nginx-status.png)
 
-> Configuring Nginx as a Loadbalancer
+> Configuring Nginx as a loadbalancer
 
 This command creates a new file `loadbalancer.conf` inside `/etc/nginx/conf.d` folder
 
@@ -202,14 +202,14 @@ Then we paste the below code inside the loadbalancer.conf file
 
 ![Nginx-t](images/nginx-t.png)
 
-If there are no errors in configuration, we then restart Nginx to load the new configuration. 
+If there are no errors in the configuration, we then restart Nginx to load the new configuration. 
 
 `sudo systemctl restart nginx
 `
 
 ![restart-nginx](images/restart-nginx.png)
 
-Next, we paste the public Ip of Nginx loadbalancer on our web browser and it servers us the 2 Apache webserver as shown below; 
+Next, we paste the public IP of Nginx load balancer on our web browser and it servers us the 2 Apache web server as shown below; 
 
 ![Nginx-webpage](images/Nginx-webpage.png)
 
