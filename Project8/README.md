@@ -1,16 +1,16 @@
 # Automating Loadbalancer configuration with Shell scripting
 
-In this project, we will demonstrates the proccess of automating the setup and configuration of Nginx as a loadbalancer for our Apache webservers. 
+In this project, we will demonstrate the process of automating the setup and configuration of Nginx as a load-balancer for our Apache webservers. 
 
 ## Deploying and Configuring the Apache Web Servers
 
-The Block codes below is a shell script that automates the process of deploying our Apache web servers. 
+The Block code below is a shell script that automates the process of deploying our Apache web servers. 
 
 ```
 #!/bin/bash
 
 ####################################################################################################################
-##### This automates the installation and configuring of apache webserver to listen on port 8000
+##### This automates the installation and configuring of Apache webserver to listen on port 8000
 ##### Usage: Call the script and pass in the Public_IP of your EC2 instance as the first argument as shown below:
 ######## ./install_configure_apache.sh 127.0.0.1
 ####################################################################################################################
@@ -51,21 +51,21 @@ sudo systemctl restart apache2
 
 ```
 
-First step is to set up 2 EC2 instance for our apache server. 
+The first step is to set up 2 EC2 instances for our Apache server. 
 
 ![ec2-instances](images/ec2-instances.png)
 
-we create a new inbound rule to accept traffic from anywhere using port 8000
+we created a new inbound rule to accept traffic from anywhere using port 8000
 
 ![inboundrules1](images/inbound-rules1.png)
 
-Next is to connect to the instance on our terminal using SSH 
+we connect to the instance on our terminal using SSH 
 
-`ssh -i`
+`ssh -i "Rasheed_ec2.pem" ubuntu@ec2-16-171-208-68.eu-north-1.compute.amazonaws.com`
 
 ![ssh-apache2sever](images/ssh-apache2svr.png)
 
-Now we open a new file and paste the above shell script in this file with 
+Now we open a new file and paste the above shell script into this file with 
 
 `sudo vi install.sh
 `
@@ -81,27 +81,22 @@ Then we change the permission on the file to make it executable using the comman
 
 ![chmod-install-sh](images/cmod-install-sh.png)
 
-Now we can run the shell script to start the automation process with 
+To run the script, we call the name of the file and pass the PUBLIC_IP of our Apache2 server
 
-`./install.sh PUBLIC_IP of our Apache2 server
+`./install.sh 16.171.208.68
 `
+
+This script updated the package repository, installed the Apache web server, checked the status of the Apache server, also configured Apache `/etc/apache2/ports.conf` & `/etc/apache2/sites-available/000-default.conf` to listen on port 8000 instead of default 80. It furthers to create an html file with a welcome message displaying our `PUBLIC_IP` and write it to `/var/www/html/index.html` and finally restarts the Apache server. 
 
 ![apache2svr-install](images/apache2svr-install.png)
 
-After that, we check status of Apache
-
-`sudo systemctl status apache2`
 
 ![apache-status](images/apache-status.png)
-
-Testing Apache on web browser
-
-
 
 
 # Deploying and Configuring Nginx as a Load Balancer
 
-The Block codes below is a shell script that automates the process of deploying and configuring our Nginx web server as a load balancer. 
+The Block codes below are a shell script that automates the process of deploying and configuring our Nginx web server as a load balancer. 
 
 ```
 
@@ -116,14 +111,14 @@ The Block codes below is a shell script that automates the process of deploying 
 ############################################################################################################# 
 
 PUBLIC_IP=$1
-firstWebserver=$2
-secondWebserver=$3
+apache1server=$2
+apache2server=$3
 
 [ -z "${PUBLIC_IP}" ] && echo "Please pass the Public IP of your EC2 instance as the argument to the script" && exit 1
 
-[ -z "${firstWebserver}" ] && echo "Please pass the Public IP together with its port number in this format: 127.0.0.1:8000 as the second argument to the script" && exit 1
+[ -z "${apache1server}" ] && echo "Please pass the Public IP together with its port number in this format: 127.0.0.1:8000 as the second argument to the script" && exit 1
 
-[ -z "${secondWebserver}" ] && echo "Please pass the Public IP together with its port number in this format: 127.0.0.1:8000 as the third argument to the script" && exit 1
+[ -z "${apache2server}" ] && echo "Please pass the Public IP together with its port number in this format: 127.0.0.1:8000 as the third argument to the script" && exit 1
 
 set -x # debug mode
 set -e # exit the script if there is an error
@@ -143,8 +138,8 @@ if [[ $? -eq 0 ]]; then
     echo " upstream backend_servers {
 
             # your are to replace the public IP and Port to that of your webservers
-            server  "${firstWebserver}"; # public IP and port for webserser 1
-            server "${secondWebserver}"; # public IP and port for webserver 2
+            server  "${apache1server}"; # public IP and port for webserser 1
+            server "${apache2server}"; # public IP and port for webserver 2
 
             }
 
@@ -161,9 +156,10 @@ fi
 sudo nginx -t
 
 sudo systemctl restart nginx
+
 ```
 
-First step is to set up an EC2 instance for our Nginx server. 
+The first step is to set up an EC2 instance for our Nginx server. 
 
 ![ec2-instances](images/ec2-instances.png)
 
@@ -171,13 +167,13 @@ we created a new inbound rule to accept traffic from anywhere using port 80
 
 ![inbound-rules-2](images/inbound-rules2.png)
 
-Next is to connect to the instance on our terminal using SSH 
+Next, we connect to the instance on our terminal using SSH 
 
-`ssh -i`
+`ssh -i "Rasheed_ec2.pem" ubuntu@ec2-51-20-31-234.eu-north-1.compute.amazonaws.com`
 
 ![ssh-nginx-svr](images/ssh-nginx-svr.png)
 
-Now we open a new file and paste the above shell script in this file with 
+Now we open a new file and paste the above shell script into this file with 
 
 `sudo vi nginx.sh
 `
@@ -191,18 +187,20 @@ Then we change the permission on the file to make it executable using the comman
 
 ![chmod-nginx](images/cmod-nginx.png)
 
-Now we can run the shell script to start the automation process with 
+To run the shell script, we call the name of the script and pass the PUBLIC_IP of the Nginx server with Apache1server followed by Apache2server as shown below;
 
-`./nginx.sh PUBLIC_IP Webserver-1 Webserver-2
+`./nginx.sh 51.20.31.234 13.51.56.111 16.171.208.68
 `
+
+This script updated the package repository, installed the Nginx web server, checked the status of the Nginx server, created a load balancer config file at `/etc/nginx/conf.d/loadbalancer.conf` and configured it to server our 2 Apache servers by listening on port 80, after that it checks if the configuration is okay and finally restarts Apache server. This process is displayed below. 
 
 ![run-nginx-sh](images/nginx-config-1.png)
 
-![](images/nginx-status.png)
+![nginx-status](images/nginx-status.png)
 
-![Alt text](images/nginx-config-ok.png)
+![nginx-config-ok](images/nginx-config-ok.png)
 
-And finally, we can test Nginx on our web browser
+Lastly, we test Nginx on our web browser and it serves our 2 Apache web pages. 
 
 ![nginx-webpage1](images/nginxwebpage1.png)
 
