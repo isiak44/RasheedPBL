@@ -4,15 +4,15 @@ This project consists of two parts:
 
 First, we configure a storage subsystem for web and database servers based on the RedHat Linux operating system.
 
-Second part is to install Wordpress and connect it to a remote MySQL database server. 
+The second part is to install WordPress and connect it to a remote MySQL database server. 
 
-## STEP1: Implementing LVM on our wordpress web server
+## STEP1: Implementing LVM on our WordPress web server
 
-First we launched an EC2 instance (Red Hat Linux OS8) and on the EBS console, we created three volumes each of 10GiB
+First, we launched an EC2 instance (Red Hat Linux OS8) and on the EBS console, we created three volumes each of 10GiB
 
 ![wp-volumes](images/wp-vols.png)
 
-Attached all volumes to the instance
+Attached all three volumes to the WP server
 
 ![vol-attach](images/vol-attach.png)
 
@@ -26,8 +26,13 @@ we then use `df -h` command to see all mounts and free space on our server
 
 Next step is to use `gdisk` utility to create a single partition on each of the disks. 
 
-`sudo gdisk /dev/xvdf
-`
+```
+
+sudo gdisk /dev/xvdf
+sudo gdisk /dev/xvdg
+sudo gdisk /dev/xvdh
+
+```
 
 ![gdisk-wp1](images/gdisk-wp1.png)
 
@@ -35,7 +40,7 @@ Again, we use the `lsblk` command to view the newly configured partition on each
 
 ![gdisk-lsblk](images/gdisk-lsblk.png)
 
-Install lVM2 package on our linux server with `sudo yum install lvm2`
+Now we install lVM2 package on our Linux server with `sudo yum install lvm2`
 
 ![yum-lvm2](images/yum-lvm2-wp.png)
 
@@ -58,15 +63,14 @@ then we verify that the physical volumes has been created successfully with `sud
 Now we use `vgcreate` utility to add all 3 PVs to a volume group and name it as webdata-vg
 
 `sudo vgcreate webdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1
-`
-
-after that we Verified that VG has been created successfully with `sudo vgs`
+ 
+ Verify that VG has been created successfully with `sudo vgs`
 
 ![vg-create](images/vg-create-wp.png)
 
-And now we use `lvcreate` utility to create 2 logical volumes by using half of the Physical volume size for `apps-lv` and the remaining space of the PV size for `logs-lv`
+After that we use `lvcreate` utility to create 2 logical volumes by using half of the Physical volume size for `apps-lv` and the remaining space of the PV size for `logs-lv`
 
-In this case, the `apps-lv` will be used to store data for the webnsite while the `logs-lv` will be used to store data for logs. 
+In this case, the `apps-lv` will be used to store data for the website while the `logs-lv` will be used to store data for logs. 
 
 ```
 sudo lvcreate -n apps-lv -L 14G webdata-vg
@@ -77,13 +81,13 @@ Then we verify that our logical volumes has been created successfully by running
 
 ![lvcreate-wp](images/lvcreate-wp-vols.png)
 
-And to verify the entire setup, we run the below command;
+To verify the entire setup, we run the below command;
 
 `sudo lsblk 
 `
 ![lsblk-wp-vol2](images/lsblk-wp-vols2.png)
 
-We can use `mkfs.ext4`  to format the logical volumes with the below code
+Then we use `mkfs.ext4`  to format the logical volumes to ext4 file system which enables us to mount our LVs to a directory.
 
 ```
 sudo mkfs -t ext4 /dev/webdata-vg/apps-lv
@@ -92,7 +96,7 @@ sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
 
 ![mkfs-wp-vols](images/mkfs-wp-vols.png)
 
-Furthermore, we create `/var/www/html` directory to store website files. Also, we create `/home/recovery/logs` directory to store backup of log data
+Furthermore, we create `/var/www/html` directory to store website files. Also, we create `/home/recovery/logs` directory to store the backup of logs data
 
 `sudo mkdir -p /var/www/html`
 
@@ -126,7 +130,7 @@ Then we restore log files from `/home/recovery/log` back into `/var/log` directo
 
 ![mount-log](images/mount-log.png)
 
-Next step is to update `/etc/fstab` file so that the mount configuration will persist after restartt of the server. 
+The next step is to update `/etc/fstab` file so that the mount configuration will persist after restart of the server. 
 
 The UUID of the device will be used to update the `/etc/fstab` file so we checked for the UUID with `sudo blkid`
 
@@ -147,14 +151,14 @@ sudo systemctl daemon-reload
 
 ![vi-fstab](images/vi-fstab-1.png)
 
-and finally in this part is to verify all our setup with df -h
+and finally this part is to verify all our setup with df -h
 
 ![df-h-mapper](<images/df -h-mapper.png>)
 
 
 ### Implementing LVM on our database server
 
-To prepare our database server, we launched a new RedHat EC2 instance and repeated the same step in implementing LVS on web server, in this case, we name our logical volume `db-lv` and mount it to /db. 
+To prepare our database server, we launched a new RedHat EC2 instance and repeated the same step in implementing LVS on the web server, in this case, we named our logical volume `db-lv` and mounted it to /db. 
 
 ![dbvol-attach-ec2](images/dbvol-attach-ec2.png)
 
@@ -172,7 +176,7 @@ Installing lvm2 on our db server with `sudo yum -y install lvm2`
 
 ![yum-lvm2-db](images/yum-lvm2-db.png)
 
-Next step is to use the pvcreate utility to initialize the disk as physical volumes to be used by LVM.
+The next step is to use the pvcreate utility to initialize the disk as physical volumes to be used by LVM.
 
 ![pvcreate-db](images/pvcreate-db.png)
 
@@ -184,11 +188,11 @@ And now we can use lvcreate utility to add our volume group to lvs by running `s
 
 ![lvcreate-db](images/lvcreate-db.png)
 
-here we use `sudo lvs` to see if our logical volume has been created successfully
+ `sudo lvs` to see if our logical volume has been created successfully
 
 ![lvs-db](images/lvs-db.png)
 
-Inspecting entire setup with lsblk
+Inspecting the entire setup with lsblk
 
 ![lsblk-db](images/lsblk-db.png)
 
@@ -208,22 +212,22 @@ Now we update the /etc/fstab file with the lvs file system UUID, this will enabl
 
 ![vi-blkid-db](images/vi-blkid-db.png)
 
-Confirn if configuration is okay with `sudo mount -a` and then reload system with `sudo systemctl daemon reload`
+Confirm if the configuration is okay with `sudo mount -a` and then reload the system with `sudo systemctl daemon reload`
 
 ![db-blkid](images/db-blkid.png)
 
-And finally we can confirm our set up with `df -h`
+And lastly we can confirm our set-up with `df -h`
 
 ![df-h-dbmapper](images/df-h-dbmapper.png)
 
 
-## Step2: Installing Wordpress and Configuring to use MySQL Database
+## Step2: Installing WordPress and Configuring to use MySQL Database
 
 
 
-### Install wordpress on our webserver
+### Install WordPress on our web server
 
-First we update our system repository 
+First, we update our system repository 
 
 `sudo yum -y update`
 
