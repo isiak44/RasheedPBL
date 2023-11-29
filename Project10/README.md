@@ -1,7 +1,7 @@
 # Devops Tooling Website Solution 
 
 
-In previous project, we implemented a Wordpress based solution that is ready to be filled with content and can be used as a full fledged website or blog. In this project, we will move further to add some more value to our solutions that a Devops team could utilize in day to day activities in managing, developing, testing, deploying and monitoring different projects. 
+In previous project, we implemented a Wordpress based solution that is ready to be filled with content and can be used as a full-fledged website or blog. In this project, we will move further to add some more value to our solutions that a Devops team could utilize in day to day activities in managing, developing, testing, deploying and monitoring different projects. 
 
 In this project, we will implement a solution that consist of the following components;
 
@@ -24,7 +24,7 @@ For Rhel 8 server, we use this ami `RHEL-8.6.0_HVM-20220503-x86_64-2-Hourly2-GP2
 
 ## Step 1: Preparing our NFS Server
 
-First we launched an EC2 instance (Red Hat Linux OS 8) and on the EBS console, we created two volumes each of 10GB and then create 3 logical volumes on it. 
+First, we launched an EC2 instance (Red Hat Linux OS 8) and on the EBS console, we created two volumes each of 10GB and then create 3 logical volumes on it. 
 
 ![nfs-ec2](images/Nfs-ec2.png)
 
@@ -36,7 +36,7 @@ SSH into our terminal to begin configurations and with `lsblk` command we inspec
 
 ![ssh-nfs](images/ssh-nfs.png)
 
-Next step is to use `gdisk` utility to create a single partition on each of the disks and also inspect it by running 
+Then `gdisk` utility to create a single partition on each of the disks and also inspect it by running 
 
 ```sudo gdisk /dev/xvdf
 sudo gdisk /dev/xvdf
@@ -46,18 +46,13 @@ sudo lsblk
 ![gdisk](images/gdisk-lsblk-nfs.png)
 
 
-Installing LVM2 package on our NFS Server with `sudo yum install lvm2`
+Next we install LVM package on our NFS Server with `sudo yum install lvm2`
 
 ![yum-lvm2](images/yum-install-lvm2.png)
-
-`sudo lvmdiskscan` to check for available partitions 
-
-
 
 Next step is to use the `pvcreate` utility to initialize each of the disk as physical volumes and then inspect with `sudo pvs`
 
 ![pvs](images/pvcreate.png)
-
 
 Then we add all pvs to a volume group with vgcreate utility 
 
@@ -111,7 +106,7 @@ Now that NFS is running, we will install our 3 webservers inside the same subnet
 
 Next we open our EC2 console and locate Networking tab and open a subnet link inside the NFS server and copy the `subnet cidr` which will be used to link our NFS to our 3 web servers.
 
-img:
+![subnet-cidr](images/subnet-cidr.png)
 
 Then we set up permission that will allow our web servers to read, write and execute files on NFS, then we restart NFS.
 
@@ -176,6 +171,12 @@ Next we open mysql with `sudo mysql` create a user `webaccess`, create database 
 
 ![sudo-mysql](images/sudo-mysql.png)
 
+Finally in this step we configure mysql binding address and restart mysql
+
+![vi-mysql](images/vi-mysqlconf.png)
+
+
+
 ## Step3: Preparing the Webservers
 
 In this step, we will create 2 RHEL 8 for our webservers, and then make sure they can serve the same content from our NFS server and MySQL database server. Further in this steps, some configurations will be done on this web servers as follows; 
@@ -196,7 +197,7 @@ Then we create and mount `/var/www` to our NFS server's export for apps
 ![mkdir-varw](images/mkdir-varwww.png)
 ![web-mount](images/web-mount-nfs.png)
 
-To enable our mount configuration persist after a reboot, we need to open the `/etc/fstab` and paste the follwing 
+To enable our mount configuration persist after a reboot, we need to open the `/etc/fstab` and paste the following 
 
 ```
 sudo vi /etc/fstab
@@ -206,7 +207,7 @@ sudo vi /etc/fstab
 ```
 ![vi-fstab](images/vi-etc=fstab.png)
 
-Next step is to install Remi's repository, Apache and PHP. 
+Next step is to install Remi's repository, Apache and PHP, we then start and enable them after successful installation. 
 
 `sudo yum install httpd -y
 `
@@ -252,15 +253,15 @@ We also implemented the above steps for other 2 webservers and they were able to
 ![web2](images/web2.png)
 
 
-Next we locate the log folder for Apache and mount it to NFS server's export for logs
+Next step is to locate the log folder for Apache and mount it to NFS server's export for logs
 
 ![ls-varlog](images/ls-varlog.png)
 
-Then we configure `/etc/fstab` to enable the mount persist after reboot.
+Then configure `/etc/fstab` to enable the mount persist after reboot.
 
 ![fstab-mount](images/vi-fstab-mount.png)
 
-Now we need to fork the Devops tooling repository to our web server and then copy the content in the `html` folder to our `/var/www/html`
+Now we fork the Devops tooling repository to our web server and then copy the content in the `html` folder to our `/var/www/html`
 
 ![clone-tooling](images/clone-tooling.png)
 ![cp-html](images/cp-html.png)
