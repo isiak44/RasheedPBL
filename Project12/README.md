@@ -1,18 +1,18 @@
 # Ansible Refactoring, Assignments and Imports Project. 
 
-In this project, we will continue working with `ansible-config-mgt` repository and make some improvement to the codes. we need to refactor our ansible code, create assignments and learn how to use the imports functionality. 
+In this project, we will continue working with `ansible-config-mgt` repository and make some improvements to the codes. we need to refactor our ansible code, create assignments and learn how to use the imports functionality. 
 
-Ansible Imports module allow us to effectively re-use previously created playbooks in a new playbook. 
+The Ansible Imports module allows us to effectively re-use previously created playbooks in a new playbook. 
 
-Code Refactoring is a general term in computer programming. It simply means making changes to the source code without changing expected behaviour of the software. The main idea of refactoring is to enhance code readability, increase maintainability and extensibility, reduce complexity, add proper comments without affecting the logic.
+Code Refactoring is a general term in computer programming. It simply means making changes to the source code without changing the expected behaviour of the software. The main idea of refactoring is to enhance code readability, increase maintainability and extensibility, reduce complexity, and add proper comments without affecting the logic.
 
 Now we will proceed to see how we can improve our ansibe codes. 
 
 ## Step 1: Jenkins job enhancement
 
-Every new change in the codes creates a separate directory which is not convinient when we want to run some commands from one place and it also consumes space on our `jenkins-ansible` server with each subsequent change. Now we enhance it by introducing a new jenkins project which will require `copy artifact plugin`
+Every new change in the codes creates a separate directory which is not convenient when we want to run some commands from one place and it also consumes space on our `Jenkins-ansible` server with each subsequent change. Now we enhance it by introducing a new Jenkins project which will require `copy-artifact plugin`
 
-- On `jenkins-ansible` server, we created a new directory called `ansible-config-mgt` it will be used to store all artifacts after each build.
+- On `Jenkins-ansible` server, we created a new directory called `ansible-config-mgt` it will be used to store all artifacts after each build.
 
 `sudo mkdir /home/ubuntu/ansible-config-artifact
 `
@@ -23,21 +23,21 @@ Every new change in the codes creates a separate directory which is not convinie
 
 ![mkdir-ans-config](images/mkdir-ans-config-art.png)
 
-- On Jenkins web console, we install `copy artifact` plugin without restarting jenkins. 
+- Then on Jenkins web console, we install `copy artifact` plugin without restarting jenkins. 
 
 ![copy_artifact-plug](images/copy_artifact_pluggin.png)
 
-- Create and configure new freestyle project `save_artifacts`, this project will be triggered by previously created `ansible` project. 
+- Next we create and configure new freestyle project `save_artifacts`, this project will be triggered by previously created `ansible` project. 
 
-The main idea of `save_artifacts` project is to save artifacts into `/home/ubuntu/ansible-config-artifact` directory. To achieve this, we create a build step and choose copy artifacts from other project, soecify `ansible` as a source project and `/home/ubuntu/ansible-config-artifact` as a target directory. 
+The main idea of `save_artifacts` project is to save artifacts into `/home/ubuntu/ansible-config-artifact` directory. To achieve this, we create a build step and choose copy artifacts from other projects, specify `ansible` as a source project and `/home/ubuntu/ansible-config-artifact` as a target directory. 
 
 ![save-art-cfg](images/save-art-config1.png)
 ![save-art-cfg](images/save-art-config2.png)
 ![save-art-cfg](images/save-artifact-config3.png)
 
-- Now we test our set up by making changes in README.MD file inside `ansible-config-mgt` repository inside main branch. 
+- Now we test our set-up by making changes in README.MD file inside `ansible-config-mgt` repository inside the main branch. 
 
-If both Jenkins jobs have completed one after another,, we shall see our files inside `/home/ubuntu/ansible-config-artifact` directory and it will be updated with every commit to main branch. 
+If both Jenkins jobs have completed one after another, we shall see our files inside `/home/ubuntu/ansible-config-artifact` directory and it will be updated with every commit to the main branch. 
 
 ![save-art-job](images/save_artifact_job.png)
 ![cat-readme](images/cat-readme.png)
@@ -45,21 +45,21 @@ If both Jenkins jobs have completed one after another,, we shall see our files i
 
 ## Step 2: Refactor ansible codes by importing other playbooks to `site.yml`
 
-Before we start to refactor our codes, we pull down the latest code from main branch and then create a new branch `refactor`
+Before we start to refactor our codes, we pull down the latest code from the main branch and then create a new branch `refactor`
 
 ![git-chekout](images/git-checkout-refactor.png)
 
-In project 11, we wrote all task in a single playbook `common.yml`, these intructions is for only 2 types of operating system, but lets imagine we have more tasks and we need to apply this playbook to other servers with different requirements. In this case, we will have to read through the whole playbook to check if all tasks written there are applicable and is there anything that we need to add for certain server/OS families. 
+In project 11, we wrote all tasks in a single playbook `common.yml`, these intructions are for only 2 types of operating systems, but let's imagine we have more tasks and we need to apply this playbook to other servers with different requirements. In this case, we will have to read through the whole playbook to check if all tasks written there are applicable and if there is anything that we need to add for certain server/OS families. 
 
 This approach becomes more tedious and our playbook will become very messy with many commented parts. However, breaking tasks up into different files is an excellent way to organize complex set of tasks and reuse them. 
 
-- First we created `site.yml` file inside `playbooks` folder. This file will become a parent to all other playbooks that will be developed including `common.yml` which means other playbooks will be referenced in the `site.yml` file. 
+- First, we created `site.yml` file inside the `playbooks` folder. This file will become a parent to all other playbooks that will be developed including `common.yml` which means other playbooks will be referenced in the `site.yml` file. 
 
-- Then we create a new folder `static-assignments` in the root of the repository which will be where all other children playbooks will be stored. 
+- Then we create a new folder `static-assignments` in the root of the repository which will be where all other children's playbooks will be stored. 
 
-- And then we move `common.yml` file inside `static-assignment` folder.
+- And then we move `common.yml` file inside the `static-assignment` folder.
 
-- Inside `site.yml` file, we use ansible import module to import `common.yml` playbook.
+- Inside `site.yml` file, we use an ansible import module to import `common.yml` playbook.
 
 ```
 ---
@@ -69,7 +69,7 @@ This approach becomes more tedious and our playbook will become very messy with 
 
 - Now we run `ansible-playbook` command against the dev environment
 
-As wireshark is already installed on our dev servers, we then created another playbook `common-del.yml` under `static-assignments` and then configure this playbook to delete `wireshark` utility from our dev servers. 
+As wireshark is already installed on our dev servers, we created another playbook `common-del.yml` under `static-assignments` and configured this playbook to delete `wireshark` utility from our dev servers. 
 
 ```
 ---
@@ -102,7 +102,7 @@ As wireshark is already installed on our dev servers, we then created another pl
 
 ![common-del-yml](images/common-del-yml.png)
 
-- Now we update `site.yml` import module and modify our playbook to the newly created `common-del.yml` then we run it against dev servers. 
+- Now we update the `site.yml` import module and modify our playbook to the newly created `common-del.yml` then we run it against dev servers. 
 
 ![ans-del-wireshark](images/ans-play-delwireshark.png)
 
@@ -112,15 +112,15 @@ As wireshark is already installed on our dev servers, we then created another pl
 
 ## Step 3: Configuring UAT webservers with a role webserver
 
-In this step, we configured 2 new web servers as `uat`. we could write task to configure web servers in the same playbook, but it would be too messy. Instead, we will use a dedicated role to make our configuration reusable. 
+In this step, we configured 2 new web servers as `uat`. we could write a task to configure web servers in the same playbook, but it would be too messy. Instead, we will use a dedicated role to make our configuration reusable. 
 
-- Now we launched 2 new ec2 instance using RHEL 8 image and then named them `web1-UAT` and `web2-UAT`.
+- Now we launched 2 new ec2 instances using RHEL 8 image and then named them `web1-UAT` and `web2-UAT`.
 
 ![uat-ec2](images/uat-ec2.png)
 
 - To create a role we must create a directory `roles/` or in `/etc/ansible/` directory. 
 
-And we can create this folder structure by using ansible utility called `ansible-galaxy` inside `ansible-config-mgt/roles` directory or by manual creation. In this case, we use created the files and folder manually as shown below;
+We can create this folder structure by using ansible utility called `ansible-galaxy` inside `ansible-config-mgt/roles` directory or by manual creation. In this case, we use created the files and folder manually as shown below;
 
 
 ```
@@ -141,7 +141,7 @@ And we can create this folder structure by using ansible utility called `ansible
 
 ![roles-tree](images/roles-tree.png)
 
-- Next step is to update `ansible-config-mgt/inventory/uat.yml` file with IP address of our UAT webservers. 
+- The next step is to update `ansible-config-mgt/inventory/uat.yml` file with IP address of our UAT webservers. 
 
 ```
 [uat-webservers]
@@ -152,7 +152,7 @@ And we can create this folder structure by using ansible utility called `ansible
 
 ![uat-web-ip](images/uat-web-ip.png)
 
-- Inside `etc/ansible/ansible.cfg` file, we uncomment `role_path` string and provide a full path to our roles directory so ansible can identify where to find configured roles. 
+- Inside `etc/ansible/ansible.cfg` file, we uncomment the `role_path` string and provide a full path to our roles directory so ansible can identify where to find configured roles. 
 
 ![vi-ans-cfg](images/vi-ansible-cfg.png)
 
@@ -201,9 +201,9 @@ And we can create this folder structure by using ansible utility called `ansible
 
 The above task includes:
 
-_installing and configure Apache_
+_Install and configure Apache_
 
-_clone tooling website from github repository_
+_Clone tooling website from Github repository_
 
 _Ensure the tooling website code is deployed to `/var/www/html` on each of the UAT webservers._
 
@@ -262,7 +262,7 @@ Now we check our UAT web servers on web browser.
 
 ![web2-uat](images/Web2-UAT.png)
 
-Our Ansible architecture now look like this 
+Our Ansible architecture now looks like this 
 
 ![refactor_arc](images/refactor-arch.png)
 
